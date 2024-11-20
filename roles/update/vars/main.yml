@@ -1,0 +1,18 @@
+---
+# Variable to control whether to automatically upgrade all packages
+auto_upgrade: true
+
+# Variable to control whether to install only security updates
+install_security_updates: true
+
+# Variable to control whether to remove unused packages
+auto_cleanup: true
+
+# Timeout for reboot (in seconds)
+reboot_timeout: 600
+
+# Delay before reboot (in seconds)
+pre_reboot_delay: 10
+
+# Package manager settings (for future extensibility or changes in preferences)
+package_manager: apt

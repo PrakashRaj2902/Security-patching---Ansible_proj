@@ -1,0 +1,31 @@
+---
+- name: Update apt cache
+  apt:
+    update_cache: yes
+  when: auto_upgrade
+
+- name: Upgrade all packages to latest version
+  apt:
+    upgrade: dist
+  when: auto_upgrade
+
+- name: Install security updates
+  apt:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ ansible_facts.packages | selectattr('value', 'defined') | selectattr('value.version', 'defined') | selectattr('value.version', 'search', '^security$') | map(attribute='key') | list }}"
+  when: install_security_updates and ansible_facts.packages is defined
+
+- name: Clean up unused packages
+  apt:
+    autoremove: yes
+    autoclean: yes
+  when: auto_cleanup
+
+- name: Reboot system if necessary
+  reboot:
+    msg: "Rebooting after system updates"
+    test_command: uptime
+    reboot_timeout: "{{ reboot_timeout }}"
+    pre_reboot_delay: "{{ pre_reboot_delay }}"
+  when: auto_upgrade or install_security_updates

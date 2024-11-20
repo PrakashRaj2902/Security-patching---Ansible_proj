@@ -1,0 +1,6 @@
+---
+- name: Automate System Updates and Security Patches
+  hosts: servers
+  become: true
+  roles:
+    - update
